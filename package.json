@@ -1,0 +1,30 @@
+{
+  "name": "cad-wire-converter",
+  "version": "1.0.0",
+  "description": "Application to process CAD wire data and convert to standard format for Brady M611 label printer",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "node dev-server.js",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "build:electron": "node electron-simple.js",
+    "setup": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
+    "csv-stringify": "^6.5.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.1.0",
+    "form-data": "^4.0.2",
+    "multer": "^1.4.5-lts.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1"
+  }
+}

@@ -7,6 +7,12 @@
 /frontend/build
 /frontend/dist
 
+# Distribution packages
+/dist
+
+# Deprecated files
+/deprecated_scripts
+
 # Environment variables
 .env
 .env.local
