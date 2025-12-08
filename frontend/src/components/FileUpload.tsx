@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { 
-  Box, 
-  Button, 
-  Typography, 
-  Alert, 
-  Paper, 
+import {
+  Box,
+  Button,
+  Typography,
+  Alert,
+  Paper,
   Stack,
   IconButton
 } from '@mui/material';
@@ -21,11 +21,11 @@ interface FileUploadProps {
   error: string | null;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ 
-  onFileChange, 
-  onSubmit, 
-  selectedFile, 
-  error 
+const FileUpload: React.FC<FileUploadProps> = ({
+  onFileChange,
+  onSubmit,
+  selectedFile,
+  error
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +41,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    
+
     const files = event.dataTransfer.files;
     if (files && files.length > 0) {
       onFileChange(files[0]);
@@ -76,7 +76,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   // Check if file type is supported
   const getFileTypeText = (file: File): string => {
     const fileExt = file.name.split('.').pop()?.toLowerCase() || '';
-    
+
     if (fileExt === 'csv' || file.type === 'text/csv') {
       return 'CSV File';
     } else if (fileExt === 'pdf' || file.type === 'application/pdf') {
@@ -120,7 +120,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       >
         <input
           type="file"
-          accept=".csv,.pdf"
+          accept=".csv,.pdf,.xlsx,.xls"
           style={{ display: 'none' }}
           ref={fileInputRef}
           onChange={handleFileSelect}
@@ -136,8 +136,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
             <Typography variant="body2" color="text.secondary">
               {getFileTypeText(selectedFile)} • {(selectedFile.size / 1024).toFixed(2)} KB
             </Typography>
-            <IconButton 
-              color="error" 
+            <IconButton
+              color="error"
               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
                 onFileChange(null);
@@ -157,7 +157,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               Drag and drop your CAD wire data file here
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Supported formats: CSV, PDF
+              Supported formats: CSV, Excel, PDF
             </Typography>
             <Button
               variant="contained"
@@ -173,9 +173,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
       {/* Submit button */}
       <Stack direction="row" justifyContent="center">
-        <Button 
-          variant="contained" 
-          onClick={onSubmit} 
+        <Button
+          variant="contained"
+          onClick={onSubmit}
           disabled={!selectedFile}
           size="large"
           sx={{ minWidth: 200 }}

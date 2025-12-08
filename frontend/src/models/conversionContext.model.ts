@@ -24,6 +24,7 @@ export enum ConversionStage {
 export enum FileType {
   CSV = 'csv',
   PDF = 'pdf',
+  EXCEL = 'excel',
   UNKNOWN = 'unknown'
 }
 
@@ -71,13 +72,17 @@ export function createInitialConversionState(): ConversionContextState {
  */
 export function determineFileType(file: File): FileType {
   const extension = file.name.split('.').pop()?.toLowerCase();
-  
+
   if (extension === 'csv' || file.type === 'text/csv') {
     return FileType.CSV;
   } else if (extension === 'pdf' || file.type === 'application/pdf') {
     return FileType.PDF;
+  } else if (['xlsx', 'xls', 'xlsm'].includes(extension || '') ||
+    file.type.includes('spreadsheet') ||
+    file.type.includes('excel')) {
+    return FileType.EXCEL;
   }
-  
+
   return FileType.UNKNOWN;
 }
 
@@ -90,22 +95,22 @@ export function validateFileForConversion(file: File | null): { isValid: boolean
   if (!file) {
     return { isValid: false, error: 'No file selected' };
   }
-  
+
   const fileType = determineFileType(file);
-  
+
   if (fileType === FileType.UNKNOWN) {
-    return { 
-      isValid: false, 
-      error: 'Unsupported file type. Please upload a CSV or PDF file.' 
+    return {
+      isValid: false,
+      error: 'Unsupported file type. Please upload a CSV, Excel, or PDF file.'
     };
   }
-  
+
   if (file.size > 10 * 1024 * 1024) {  // 10MB limit
-    return { 
-      isValid: false, 
-      error: 'File size exceeds the maximum limit of 10MB.' 
+    return {
+      isValid: false,
+      error: 'File size exceeds the maximum limit of 10MB.'
     };
   }
-  
+
   return { isValid: true, error: null };
 }
