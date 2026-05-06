@@ -2,14 +2,13 @@
   "name": "cad-wire-converter",
   "version": "1.0.0",
   "description": "Application to process CAD wire data and convert to standard format for Brady M611 label printer",
-  "main": "app.js",
+  "main": "electron/main.js",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "node dev-server.js",
-    "start:backend": "cd backend && npm start",
-    "start:frontend": "cd frontend && npm start",
-    "build": "cd frontend && npm run build",
-    "build:electron": "node electron-simple.js",
+    "start:dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\"",
+    "electron:dev": "concurrently \"cd backend && npm start\" \"cd frontend && set BROWSER=none && npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:frontend && electron-builder --win --x64",
     "setup": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "dependencies": {
@@ -25,6 +24,44 @@
   "devDependencies": {
     "concurrently": "^8.2.0",
     "electron": "^28.1.0",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.9.1",
+    "wait-on": "^7.2.0"
+  },
+  "author": "Morgan Sound",
+  "build": {
+    "appId": "com.morgansound.cad-wire-label-tool",
+    "productName": "CAD Wire Label Tool",
+    "copyright": "Copyright © 2025 Morgan Sound",
+    "forceCodeSigning": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "backend/**/*",
+      "frontend/build/**/*",
+      "!**/node_modules/.cache",
+      "!backend/uploads/**/*",
+      "!backend/downloads/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/node_modules",
+        "to": "backend/node_modules"
+      }
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] }
+      ],
+      "icon": "electron/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CAD Wire Label Tool"
+    }
   }
 }
