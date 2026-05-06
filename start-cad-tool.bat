@@ -24,7 +24,7 @@ echo Waiting for backend to initialize...
 timeout /t 5 /nobreak >nul
 
 echo Starting Frontend Application...
-start "CAD Wire Frontend" cmd /k "cd frontend && npm start"
+start "CAD Wire Frontend" cmd /k "cd frontend && set BROWSER=none && npm start"
 
 echo.
 echo ========================================
